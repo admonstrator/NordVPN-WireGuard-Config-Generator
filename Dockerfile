@@ -1,4 +1,4 @@
-FROM oven/bun:1.3.0
+FROM oven/bun:latest
 
 RUN apt-get update && \
     apt-get install -y curl git && \
@@ -7,7 +7,7 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-RUN git clone https://github.com/mustafachyi/NordVPN-WireGuard-Config-Generator .
+RUN git clone https://github.com/Admonstrator/NordVPN-WireGuard-Config-Generator .
 
 WORKDIR /app/web-version-V2/web-version-V2-Backend
 
