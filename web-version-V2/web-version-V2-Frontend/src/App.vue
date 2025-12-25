@@ -160,12 +160,12 @@ watch([srv.fCountry, srv.fCity], observe)
               </select>
             </div>
           </div>
-          <div class="hidden md:flex items-center ml-auto text-xs text-nord-text-secondary px-2">
-            <span>Mirror of <a href="https://nord-configs.selfhoster.nl/" target="_blank" rel="noopener noreferrer" class="text-vscode-accent hover:underline">nord-configs.selfhoster.nl</a></span>
-          </div>
         </nav>
         <div class="sm:pl-0 pl-[calc(2.25rem+0.5rem)]">
           <div class="flex flex-wrap items-center justify-end gap-2 text-xs" @click="ui.close">
+            <div class="hidden sm:flex items-center text-xs text-nord-text-secondary px-2">
+              <span>Mirror of <a href="https://nord-configs.selfhoster.nl/" target="_blank" rel="noopener noreferrer" class="text-vscode-accent hover:underline">nord-configs.selfhoster.nl</a></span>
+            </div>
             <button @click="dlBatch" :disabled="dlLoading" class="w-full sm:w-auto flex items-center justify-center gap-1.5 px-3 py-1.5 rounded bg-nord-button-primary text-white font-semibold hover:bg-nord-button-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
               <div v-if="dlLoading" class="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />
               <Icon v-else name="archive" class="w-4 h-4" />
