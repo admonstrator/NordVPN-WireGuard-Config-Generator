@@ -1,60 +1,57 @@
-# NordVPN WireGuard Configuration Backend
+# NordGen Backend
 
-This project provides a high-performance backend service, built with Bun and Hono, for generating NordVPN WireGuard configurations.
+A minimalist, high-performance backend service for generating NordVPN WireGuard configurations. Built on the **Go** programming language and the **Fiber** framework, this service handles server data caching, credential exchange, and configuration generation with extreme efficiency.
 
-## Features
+## Overview
 
--   **Dynamic Server List**: Fetches and caches the latest server list from the NordVPN API.
--   **Key Generation**: Securely exchanges a NordVPN token for a WireGuard private key.
--   **Configuration Generation**: Creates customized WireGuard `.conf` files.
--   **Multiple Output Formats**: Delivers configurations as plain text, a downloadable file, or a QR code image.
--   **High Performance**: Utilizes Bun's speed, brotli compression, and efficient caching with background updates.
+This application serves as the API layer for the NordGen project. It interfaces directly with NordVPN's infrastructure to retrieve server lists and exchange authentication tokens for WireGuard private keys. It provides endpoints to generate configuration files in text, file, or QR code formats.
+
+## Prerequisites
+
+- Go 1.25+ (Recommended)
 
 ## Installation
 
-Ensure you have [Bun](https://bun.sh/) installed.
+Clone the repository and download the dependencies:
 
 ```bash
-bun install
+git clone https://github.com/mustafachyi/NordVPN-WireGuard-Config-Generator
+cd NordVPN-WireGuard-Config-Generator
+go mod download
 ```
 
-## Usage
+## Development
 
-### Development
-
-To run the server in development mode with live-reloading:
+Start the server directly using the Go toolchain:
 
 ```bash
-bun run dev
+go run main.go
 ```
 
-### Production
+The server listens on port `3000` by default.
 
-To build and run the server for production:
+## Production
+
+To build and run the optimized production binary:
 
 ```bash
-bun start
+# Build the binary with size optimizations (strip debug symbols)
+CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -trimpath -o server main.go
+
+# Run the binary
+./server
 ```
 
-The server will be available at `http://localhost:3000`.
+## Architecture
 
-## Testing
+- **Core Store**: Maintains a thread-safe in-memory cache of NordVPN servers, refreshed every 5 minutes. It also handles static asset serving with pre-compressed Brotli support and ETag caching.
+- **Validation**: Strict input validation ensures all data sent to upstream APIs or used in configuration generation is sanitized.
+- **Performance**: Utilizes **Fiber's** zero-allocation routing and Go's native concurrency model to handle high throughput with minimal resource usage.
 
-The project includes a comprehensive test suite using Bun's built-in test runner.
+## Static Assets
 
-### Running Tests
+The server looks for a `./public` directory to serve static frontend files. If an `index.html` is present, it is served for the root path and any unknown routes (SPA fallback), with the server data injected directly into the HTML to prevent an initial round-trip fetch.
 
-```bash
-# Run the full test suite once
-bun test
+## API Documentation
 
-# Run tests in watch mode
-bun test:watch
-
-# Generate a test coverage report
-bun test:coverage
-```
-
-## API
-
-For detailed endpoint specifications, request/response formats, and validation rules, see the official [API Documentation](API.md).
+For detailed endpoint specifications, request/response formats, and validation rules, please refer to the [API.md](./API.md).
