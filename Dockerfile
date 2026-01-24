@@ -12,8 +12,8 @@ WORKDIR /app
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/group /etc/group
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=builder /build/server .
-COPY --from=builder /build/public ./public
+COPY --from=builder --chown=appuser:appuser /build/server .
+COPY --from=builder --chown=appuser:appuser /build/public ./public
 USER appuser:appuser
 EXPOSE 3000
 ENTRYPOINT ["./server"]
